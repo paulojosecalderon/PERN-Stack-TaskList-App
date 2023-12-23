@@ -1,5 +1,6 @@
 import React from 'react'
 import InputTask from './components/InputTask'
+import ListTask from './components/ListTask'
 
 function App() {
   
@@ -7,6 +8,7 @@ function App() {
     <>
       <div className='container'>
         <InputTask/>
+        <ListTask/>
       </div>
     </>
    
