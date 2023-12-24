@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const InputTask = ()=>{
     const [description, setDescription] = useState('');
-    
+
     const handleInputTask = async(e)=>{
         e.preventDefault();
         try {
@@ -14,8 +14,8 @@ const InputTask = ()=>{
                 },
                 body: JSON.stringify(postBody)
             })
-            console.log(postInputTask)
-
+            console.log(postInputTask);
+            window.location = "/";
         } catch (error) {
             console.error(error.message)
         }

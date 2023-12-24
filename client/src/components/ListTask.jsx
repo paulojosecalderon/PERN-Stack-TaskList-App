@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import EditTask from "./EditTask";
 
 const ListTask = ()=>{
     const [taskDescription, setTaskDesciption] = useState([]);
@@ -18,7 +19,7 @@ const ListTask = ()=>{
         }
     }
     
-    const getTaskList = async()=>{
+   const getTaskList = async()=>{
         try {
             const getTaskListResponse = await fetch('http://localhost:5000/api/v1/tasks');
             const dataTaskList = await getTaskListResponse.json();
@@ -56,7 +57,7 @@ const ListTask = ()=>{
         taskDescription.map(task => 
         <tr key={task.task_id}>
             <td>{task.description}</td>
-            <td><button className="btn btn-warning">Edit</button></td>
+            <td><EditTask task={task}/></td>
             <td><button className="btn btn-danger" onClick={()=>deleteTask(task.task_id)}>Delete</button></td>
         </tr>)
     }  
