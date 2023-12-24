@@ -1,57 +1,69 @@
-import React, {useEffect, useState} from "react";
+import React, {useState, useEffect} from "react";
 
 const ListTask = ()=>{
-    const [taskList, setTaskList] = useState([]);
+    const [taskDescription, setTaskDesciption] = useState([]);
     
-    const getTasks = async()=>{
+    const deleteTask = async(id)=>{
         try {
-            const response = await fetch('http://localhost:5000/api/v1/tasks/');
-            const data = await response.json();
+            const deleteTaskResponse = await fetch(`http://localhost:5000/api/v1/tasks/${id}`,{
+                method: 'DELETE'
+            })
+            console.log(deleteTaskResponse);
 
-            console.log(data);
-            setTaskList(data);
+            setTaskDesciption(taskDescription.filter(task => task.task_id!==id));
+
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+    
+    const getTaskList = async()=>{
+        try {
+            const getTaskListResponse = await fetch('http://localhost:5000/api/v1/tasks');
+            const dataTaskList = await getTaskListResponse.json();
+            console.log(dataTaskList);
+            
+            setTaskDesciption(dataTaskList);
+
         } catch (error) {
             console.error(error.message);
         }
     }
 
     useEffect(()=>{
-        getTasks();
-    }, [])
+        getTaskList();
+    },[])
 
     return(
-        <>
-            {" "}
-            <table className="table table-hover my-5">
-                <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {/*
-                         <tr>
-                            <td>John</td>
-                            <td>Doe</td>
-                            <td>john@example.com</td>
-                        </tr>
-                     */}
-                     {
-                        taskList.map(task => 
-                            <tr key={task.task_id}>
-                                <td>{task.description}</td>
-                                <td><button className="btn btn-primary">Edit</button></td>
-                                <td><button className="btn btn-danger">Delete</button></td>
-                            </tr>
-                            )
-                     }
-                
-                </tbody>
-            </table>
-        </>
+        <table className="table table-hover mt-4">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+    {/*
+        <tr>
+            <td>John</td>
+            <td>Doe</td>
+            <td>john@example.com</td>
+        </tr>
+    */}
+    {
+        taskDescription.map(task => 
+        <tr key={task.task_id}>
+            <td>{task.description}</td>
+            <td><button className="btn btn-warning">Edit</button></td>
+            <td><button className="btn btn-danger" onClick={()=>deleteTask(task.task_id)}>Delete</button></td>
+        </tr>)
+    }  
+      
+    </tbody>
+  </table>
     )
-};
+}
 
-export default ListTask;
+export default ListTask
